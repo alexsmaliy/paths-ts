@@ -3,7 +3,8 @@
   "packages": {
     "specifiers": {
       "jsr:@std/assert": "jsr:@std/assert@1.0.6",
-      "jsr:@std/internal@^1.0.4": "jsr:@std/internal@1.0.4"
+      "jsr:@std/internal@^1.0.4": "jsr:@std/internal@1.0.4",
+      "npm:nanoid@5.0": "npm:nanoid@5.0.7"
     },
     "jsr": {
       "@std/assert@1.0.6": {
@@ -15,7 +16,18 @@
       "@std/internal@1.0.4": {
         "integrity": "62e8e4911527e5e4f307741a795c0b0a9e6958d0b3790716ae71ce085f755422"
       }
+    },
+    "npm": {
+      "nanoid@5.0.7": {
+        "integrity": "sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==",
+        "dependencies": {}
+      }
     }
   },
-  "remote": {}
+  "remote": {},
+  "workspace": {
+    "dependencies": [
+      "npm:nanoid@5.0"
+    ]
+  }
 }

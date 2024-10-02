@@ -1,13 +1,18 @@
-import type { PriorityQueue } from "../interfaces/PriorityQueue.ts";
+import type { PriorityQueue } from "../interfaces/PriorityQueue.ts"
+import { type UniqueId, uniqueId } from "../util/UniqueId.ts"
 
 export class Heap<T, C> implements PriorityQueue<T, C> {
     private tasks: T[]
     private costs: C[]
+    private ids: UniqueId[]
+    private indexes: Map<UniqueId, number>
     private comp: (cost1: C, cost2: C) => boolean
     
     constructor(comp = (cost1: C, cost2: C) => cost1 < cost2) {
         this.tasks = []
         this.costs = []
+        this.ids = []
+        this.indexes = new Map()
         this.comp = comp
     }
 
@@ -17,12 +22,16 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
                 return undefined
             case 1: {
                 this.costs.pop()
+                this.indexes.clear()
                 return this.tasks.pop()
             }
             default: {
                 const top = this.tasks[0]
+                const topId = this.ids[0]
                 this.tasks[0] = this.tasks.pop() as unknown as T // Deno is evil.
                 this.costs[0] = this.costs.pop() as unknown as C
+                this.ids[0] = this.ids.pop() as unknown as UniqueId
+                this.indexes.delete(topId)
                 this.down(0)
                 return top
             }
@@ -33,10 +42,33 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
         return this.tasks.at(0)
     }
     
-    push(task: T, cost: C): void {
+    push(task: T, cost: C): UniqueId {
+        const taskId = uniqueId()
+        const pos = this.tasks.length // becomes valid after push
         this.tasks.push(task)
         this.costs.push(cost)
-        this.up(this.tasks.length - 1)
+        this.ids.push(taskId)
+        this.indexes.set(taskId, pos)
+        this.up(pos)
+        return taskId
+    }
+
+    update(taskId: UniqueId, updatedCost: C): boolean {
+        if (!this.indexes.has(taskId)) {
+            // If there is no task tp update, push a new task.
+            return false
+        }
+        const pos = this.indexes.get(taskId) as unknown as number
+        const currentCost = this.costs[pos]
+        this.costs[pos] = updatedCost
+        if (this.comp(currentCost, updatedCost)) {
+            // Current cost is better, push down.
+            this.down(pos)
+        } else {
+            // Updated cost is better, bubble up.
+            this.up(pos)
+        }
+        return true
     }
 
     size(): number {
@@ -53,6 +85,14 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
         const cost2 = this.costs[pos2]
         this.costs[pos1] = cost2
         this.costs[pos2] = cost1
+
+        const id1 = this.ids[pos1]
+        const id2 = this.ids[pos2]
+        this.ids[pos1] = id2
+        this.ids[pos2] = id1
+
+        this.indexes.set(id1, pos2)
+        this.indexes.set(id2, pos1)
     }
 
     private up(position: number) {
