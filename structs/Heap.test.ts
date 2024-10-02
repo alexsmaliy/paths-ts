@@ -1,6 +1,5 @@
 import { assertEquals } from "jsr:@std/assert/equals"
 import { Heap } from "./Heap.ts"
-import { UniqueId } from "../util/UniqueId.ts";
 
 Deno.test(function heapTest1() {
     const h1 = new Heap()

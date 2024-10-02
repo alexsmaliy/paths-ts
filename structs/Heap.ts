@@ -28,9 +28,9 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
             default: {
                 const top = this.tasks[0]
                 const topId = this.ids[0]
-                this.tasks[0] = this.tasks.pop() as unknown as T // Deno is evil.
-                this.costs[0] = this.costs.pop() as unknown as C
-                this.ids[0] = this.ids.pop() as unknown as UniqueId
+                this.tasks[0] = this.tasks.pop()!
+                this.costs[0] = this.costs.pop()!
+                this.ids[0] = this.ids.pop()!
                 this.indexes.delete(topId)
                 this.down(0)
                 return top

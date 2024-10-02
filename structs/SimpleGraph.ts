@@ -1,4 +1,4 @@
-import type { Graph } from "../interfaces/Graph.ts";
+import type { Graph } from "../interfaces/Graph.ts"
 
 function* emptyGenerator() {}
 
@@ -27,7 +27,7 @@ export class SimpleGraph<L> implements Graph<L> {
         let dstId: number
 
         if (srcExists) {
-            srcId = this.label𐙤id.get(src) as unknown as number // Deno is evil.
+            srcId = this.label𐙤id.get(src)!
         } else {
             srcId = this.label𐙤id.size
             this.label𐙤id.set(src, srcId)
@@ -35,7 +35,7 @@ export class SimpleGraph<L> implements Graph<L> {
         }
 
         if (dstExists) {
-            dstId = this.label𐙤id.get(dst) as unknown as number // Deno is evil.
+            dstId = this.label𐙤id.get(dst)!
         } else {
             dstId = this.label𐙤id.size
             this.label𐙤id.set(dst, dstId)
@@ -55,7 +55,7 @@ export class SimpleGraph<L> implements Graph<L> {
         const nodeExists = this.label𐙤id.has(label)
         let nodeId: number
         if (nodeExists) {
-            nodeId = this.label𐙤id.get(label) as unknown as number // Deno is evil.
+            nodeId = this.label𐙤id.get(label)!
         } else {
             nodeId = this.label𐙤id.size
             this.label𐙤id.set(label, nodeId)
@@ -86,9 +86,9 @@ export class SimpleGraph<L> implements Graph<L> {
 
     private *genEdges() {
         for (const [src, es] of this.edges.entries()) {
-            const srcLabel = this.id𐙤label.get(src) as unknown as L
+            const srcLabel = this.id𐙤label.get(src)!
             for (const [dst, w] of es.entries()) {
-                const dstLabel = this.id𐙤label.get(dst) as unknown as L
+                const dstLabel = this.id𐙤label.get(dst)!
                 yield [srcLabel, dstLabel, w] as const
             }
         }

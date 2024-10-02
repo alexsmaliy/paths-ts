@@ -1,5 +1,5 @@
-import { assertEquals } from "jsr:@std/assert/equals";
-import { SimpleGraph } from "./SimpleGraph.ts";
+import { assertEquals } from "jsr:@std/assert/equals"
+import { SimpleGraph } from "./SimpleGraph.ts"
 
 Deno.test(function simpleGraphTest1() {
     const g = new SimpleGraph()
