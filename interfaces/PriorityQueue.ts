@@ -1,6 +1,6 @@
-export interface PriorityQueue<T> {
+export interface PriorityQueue<T, C> {
     getTop(): T | undefined
     peekTop(): T | undefined
-    push(t: T): void
+    push(task: T, cost: C): void
     size(): number
 }
