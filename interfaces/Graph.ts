@@ -4,6 +4,7 @@ export interface Graph<L> {
     addNode(label: L): void
     nodeCount(): number
     edgeCount(): number
+    containsNode(label: L): boolean
     getNodes(): IterableIterator<readonly [L, number]>
     getEdges(): IterableIterator<readonly [L, L, number]>
     getNodeId(label: L): number | undefined

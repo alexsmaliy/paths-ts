@@ -76,6 +76,10 @@ export class SimpleGraph<L> implements Graph<L> {
         return (sum / 2) | 0 // A <-> B counts as one edge.
     }
 
+    containsNode(label: L): boolean {
+        return this.label𐙤id.has(label)
+    }
+
     getNodes(): IterableIterator<readonly [L, number]> {
         return this.label𐙤id.entries()
     }
