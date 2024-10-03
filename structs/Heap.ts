@@ -53,9 +53,14 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
         return taskId
     }
 
+    /**
+     * Update the priority of a task that's already on the heap.
+     * @param taskId the task to update
+     * @param updatedCost the updated cost
+     * @returns true if the task is on this heap, false otherwise
+     */
     update(taskId: UniqueId, updatedCost: C): boolean {
         if (!this.indexes.has(taskId)) {
-            // If there is no task tp update, push a new task.
             return false
         }
         const pos = this.indexes.get(taskId) as unknown as number
