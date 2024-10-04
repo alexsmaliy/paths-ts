@@ -63,7 +63,7 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
         if (!this.indexes.has(taskId)) {
             return false
         }
-        const pos = this.indexes.get(taskId) as unknown as number
+        const pos = this.indexes.get(taskId)!
         const currentCost = this.costs[pos]
         this.costs[pos] = updatedCost
         if (this.comp(currentCost, updatedCost)) {
@@ -74,6 +74,42 @@ export class Heap<T, C> implements PriorityQueue<T, C> {
             this.up(pos)
         }
         return true
+    }
+
+    remove(taskId: UniqueId): T | undefined {
+        if (!this.indexes.has(taskId)) {
+            return undefined
+        }
+        
+        const pos = this.indexes.get(taskId)!
+        
+        if (pos === 0)
+            return this.getTop()
+        
+        if (pos === this.tasks.length - 1) {
+            const removedTask = this.tasks.pop()!
+            this.costs.pop()
+            const removedId = this.ids.pop()!
+            this.indexes.delete(removedId)
+            return removedTask
+        }
+        
+        const removedTask = this.tasks[pos]!
+        const removedId = this.ids[pos]!
+        this.tasks[pos] = this.tasks.pop()!
+        this.costs[pos] = this.costs.pop()!
+        this.ids[pos] = this.ids.pop()!
+        this.indexes.delete(removedId)
+        this.indexes.set(this.ids[pos]!, pos)
+
+        const parent = ((pos - 1) / 2) | 0
+        if (this.comp(this.costs[pos], this.costs[parent])) {
+            this.up(pos)
+        } else {
+            this.down(pos)
+        }
+
+        return removedTask
     }
 
     size(): number {

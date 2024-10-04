@@ -20,10 +20,8 @@ export function dijkstraOnGraph<L>(g: Graph<L>, src: L, dst: L) {
 
     costs.set(currNode, 0)
     predecessors.set(currNode, sentinelNoPredecessor)
-    node𐙤heapId.set(
-        currNode,
-        openNodesHeap.push(currNode, 0),
-    )
+    let addedId = openNodesHeap.push(currNode, 0)
+    node𐙤heapId.set(currNode, addedId)
 
     while (currNode !== destNode && openNodesHeap.size() > 0) {
         currNode = openNodesHeap.getTop()!
@@ -43,10 +41,8 @@ export function dijkstraOnGraph<L>(g: Graph<L>, src: L, dst: L) {
                     }
                 } else {
                     costs.set(neighborId, maybeImprovedCost)
-                    node𐙤heapId.set(
-                        neighborId,
-                        openNodesHeap.push(neighborId, maybeImprovedCost),
-                    )
+                    addedId = openNodesHeap.push(neighborId, maybeImprovedCost)
+                    node𐙤heapId.set(neighborId, addedId)
                     predecessors.set(neighborId, currNode)
                 }
             }
